@@ -34,11 +34,11 @@ export class EventListService implements OnInit {
     })
   }
 
-  addEvent(event){
+  addEvent(event) {
     
     // if online, make http post request to create new item in the list
     if (event) {
-      this.events.push[event]
+      this.events.push(event)
     }
   }
 }
