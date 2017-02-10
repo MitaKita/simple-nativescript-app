@@ -6,6 +6,7 @@ import { AddEventComponent } from "./pages/add-event/add-event.component"
 export const routes = [
   { path: "", component: SignUpComponent },
   { path: "sign-up", component: SignUpComponent },
+  { path: "sign-up/:id", component: SignUpComponent },
   { path: "list", component: ListComponent },
   { path: "login", component: LoginComponent },
   { path: "add-event", component: AddEventComponent }

@@ -1,5 +1,13 @@
 import { Component } from "@angular/core"
-import { Router } from "@angular/router"
+import { Router, Params } from "@angular/router"
+import dialogs = require("ui/dialogs")
+import { PageRoute, RouterExtensions } from "nativescript-angular/router"
+
+import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/switchMap'
+
+import { AppStateService } from "./../../shared/app-state/app-state.service"
+import { EventItem } from "./../../shared/event-item/event-item"
 
 @Component({
   selector: "sign-up",
@@ -15,18 +23,63 @@ import { Router } from "@angular/router"
       <Button text="I agree"></Button>
       <Button text="Sign Up"></Button>
       <Button text="Clear"></Button>
-      <Button text="Hidden button" (tap)="openLogin()"></Button>
+      <Button text="Hidden button" (tap)="handleHiddenButtonTap()"></Button>
     </StackLayout>
   `
 })
-export class SignUpComponent {
+export class SignUpComponent  {
 
-  constructor(private router: Router) {
+  private currentEvent: EventItem
 
+  constructor(private routerExtensions: RouterExtensions, private appStateService: AppStateService, private pageRoute: PageRoute) {
+    console.log('sign-up.component constructor')
+    this.pageRoute.activatedRoute
+      .switchMap(activatedRoute => activatedRoute.params)
+      .forEach(params => {
+        // this.currentEvent = params['event']
+        console.log('activatedRoute params')
+        console.dump(params)
+      })
+  }
+
+  handleHiddenButtonTap(){
+    console.log(this.appStateService.isUserLoggedIn())
+    if (this.appStateService.isUserLoggedIn()) {
+      this.navigateToList()
+    } else {
+      this.openLogin()
+    }
   }
 
   openLogin() {
-    // this.router.navigate(['/login'])
-    this.router.navigate(['/login'])
+    console.log('openLogin()')
+    // this.router.navigate(['/list'])
+    dialogs.login("", "User", "Password").then(
+      result => {
+        console.log(result.result)
+        console.log(result.userName)
+        console.log(result.password)
+        if(result.result) {
+          if (this.isCorrectUser(result.userName) && this.isCorrectPassword(result.password)) {
+            this.appStateService.setLoginTrue()
+            console.log('navigating to list')
+            // this.router.navigate(['/list'])
+            this.navigateToList()
+          }
+        }
+      }
+    )
+  }
+
+  isCorrectUser(user): boolean {
+    return user === 'User'
+  }
+
+  isCorrectPassword(password): boolean {
+    return password === 'Password'
+  }
+
+  navigateToList(){
+    this.routerExtensions.navigate(['/list'], { clearHistory: true })
   }
 }

@@ -1,44 +1,55 @@
-import { Injectable, OnInit } from "@angular/core"
+import { Injectable } from "@angular/core"
 import { Observable } from "rxjs/Rx"
+import observableArrayModule = require("data/observable-array")
 
-import { Event } from "../event/event"
+import { EventListHelper } from "./event-list-helper"
+import { EventItem } from "../event-item/event-item"
 
 @Injectable()
-export class EventListService implements OnInit {
+export class EventListService {
 
+  private isOnline: boolean = true
+
+  private eventListHelper: EventListHelper
+  // private events: observableArrayModule.ObservableArray<EventItem>
   // private listeners = []
 
   //Event = {eventTitle: string, eventNote: string, eventType: string, eventDate: Date }
-  private events = [
-    {eventTitle: 'event title 1', eventNote: 'event note', eventType: 'event type', eventDate: new Date()},
-    {eventTitle: 'event title 2', eventNote: 'event note', eventType: 'event type', eventDate: new Date()},
-    {eventTitle: 'event title 3', eventNote: 'event note', eventType: 'event type', eventDate: new Date()},
+  private initialItems = [
+    new EventItem('my event', 'some text about the event', 'type', new Date())
   ]
-
-  ngOnInit() {
-    
-  }
 
   updateEvents() {
     // make http request
   }
 
-  getEvents(listener) {
-    return this.events
+  all(): Promise<observableArrayModule.ObservableArray<EventItem>> {
+    return Promise.resolve(this.getEvents())
+  }
+
+  getEvents(): observableArrayModule.ObservableArray<EventItem> {
+    if (!this.eventListHelper) {
+      this.eventListHelper = new EventListHelper()
+    }
+    return this.eventListHelper.getEvents()
+    // this.events = new observableArrayModule.ObservableArray<EventItem>(this.initialItems)
+    // console.dump(this.events)
+    // return this.events
   }
 
   getEventsObservable() {
 
-    return new Observable(observer => {
-
-    })
+    
   }
 
-  addEvent(event) {
+  addEvent(event, defaultValue): Promise<observableArrayModule.ObservableArray<EventItem>> {
     
+    console.log('addEvent')
+    console.dump(event)
     // if online, make http post request to create new item in the list
-    if (event) {
-      this.events.push(event)
+    if (this.isOnline) {
+      return Promise.resolve(this.eventListHelper.add(event))
     }
+    return Promise.reject(defaultValue)
   }
 }

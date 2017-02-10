@@ -1,19 +1,18 @@
 import { Component } from "@angular/core"
+import { ModalDialogParams } from "nativescript-angular/modal-dialog"
 import { Router } from "@angular/router"
 
-import { EventListService } from "./../../shared/event-list/event-list.service"
-
-
+// import { EventListService } from "./../../shared/event-list/event-list.service"
+import { EventItem } from "./../../shared/event-item/event-item"
 
 @Component({
   selector: "add-event",
-  providers: [EventListService],
   template: `
-    <StackLayout>
-      <TextField hint="Event Title" [(ngModel)]="eventTitle"></TextField>
-      <TextField hint="Event Note" [(ngModel)]="eventNote"></TextField>
-      <TextField hint="Type" [(ngModel)]="eventType"></TextField>
-      <Button text="Create" (tap)="create()"></Button>
+    <StackLayout style="padding: 25">
+      <TextField hint="Event Title" [(ngModel)]="eventTitle" style="width: 200"></TextField>
+      <TextField hint="Event Note" [(ngModel)]="eventNote" style="width: 200"></TextField>
+      <TextField hint="Type" [(ngModel)]="eventType" style="width: 200"></TextField>
+      <Button text="Create" (tap)="create()" style="width: 100; margin-top: 20"></Button>
     </StackLayout>
   `
 })
@@ -23,15 +22,16 @@ export class AddEventComponent {
   eventNote: string
   eventType: string
   
-  constructor(private router: Router, private eventListService: EventListService){}
+  constructor(private router: Router, private params: ModalDialogParams){}
 
   create() {
 
     let text = `title = ${this.eventType}, note = ${this.eventNote}, type = ${this.eventType}`
 
-    alert(text)
+    console.log(text)
 
-    this.eventListService.addEvent({eventTitle: this.eventType, eventNote: this.eventNote, eventType: this.eventType})
+    // this.params.closeCallback("test")
+    this.params.closeCallback(new EventItem(this.eventTitle, this.eventNote, this.eventType, new Date()))
 
     // this.router.navigate(['sign-up'])
   }

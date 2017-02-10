@@ -1,1 +1,10 @@
-<Label text="Hello world"></Label>
+<StackLayout>
+  <Button text="Add Event" (tap)="addEvent()" ></Button>
+  <GridLayout>
+    <ListView [items]="eventList" class="small-spacing">
+      <template let-item="item">
+        <Label [text]="item.name" class="medium-spacing"></Label>
+      </template>
+    </ListView>
+  </GridLayout>
+</StackLayout>
