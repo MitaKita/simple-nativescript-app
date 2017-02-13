@@ -1,4 +1,6 @@
 import { Component } from "@angular/core"
+import { registerElement } from 'nativescript-angular/element-registry';
+registerElement('CheckBox', () => require('nativescript-checkbox').CheckBox);
 
 import { AppStateService } from "./shared/app-state/app-state.service"
 import { EventListService } from "./shared/event-list/event-list.service"
@@ -6,7 +8,9 @@ import { EventListService } from "./shared/event-list/event-list.service"
 @Component({
   selector: "main",
 
-  template: `<page-router-outlet></page-router-outlet>`,
+  template: `
+      <page-router-outlet></page-router-outlet>
+    `,
   providers: [AppStateService, EventListService]
 
 })
