@@ -27,6 +27,10 @@ export class EventListService {
     return Promise.resolve(this.getEvents())
   }
 
+  getEvent(index): EventItem {
+    return this.eventListHelper.getEvent(index)
+  }
+
   getEvents(): observableArrayModule.ObservableArray<EventItem> {
     if (!this.eventListHelper) {
       this.eventListHelper = new EventListHelper()

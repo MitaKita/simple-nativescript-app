@@ -12,6 +12,10 @@ export class EventListHelper {
     this.events = new observableArrayModule.ObservableArray([this.getInitialItem()])
   }
 
+  public getEvent(index): EventItem {
+    return this.events.getItem(index)
+  }
+
   public getEvents(): observableArrayModule.ObservableArray<EventItem> {
     return this.events
   }

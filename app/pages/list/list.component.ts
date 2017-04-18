@@ -15,8 +15,8 @@ import { EventItem } from '../../shared/event-item/event-item'
   template: `
     <StackLayout>
       <StackLayout orientation="horizontal">
-        <Button text="Add Event" (tap)="addEvent()" ></Button>
-        <Button text="Logout" (tap)="logout()" ></Button>
+        <Button text="Add Event" (tap)="addEvent()" style="width: 50%;" ></Button>
+        <Button text="Logout" (tap)="logout()" style="width: 50%;"></Button>
       </StackLayout>
       <GridLayout>
         <ListView [items]="eventList" class="small-spacing" (itemTap)="itemTapped($event)">
@@ -90,7 +90,7 @@ export class ListComponent implements OnInit {
     console.log('navigate to sign-up page for this item')
     
     
-    this.back(this.eventList.getItem(args.index))
+    this.back(args.index)
 
   }
 
@@ -99,7 +99,7 @@ export class ListComponent implements OnInit {
     this.routerExtensions.navigate(["sign-up"], { clearHistory: true })
   }
 
-  back(item) {
-    this.routerExtensions.navigate(["sign-up", item.id])
+  back(index) {
+    this.routerExtensions.navigate(["sign-up",index])
   }
 }
